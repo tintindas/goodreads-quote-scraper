@@ -14,7 +14,6 @@
   "author": "tintin_das",
   "license": "ISC",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.3",
     "dotenv": "^8.2.0",
     "jssoup": "0.0.12",
     "mongoose": "^5.9.3",

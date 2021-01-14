@@ -26,5 +26,3 @@ const quoteSchema = new Schema({
 const Quote = new mongoose.model('Quote', quoteSchema)
 
 module.exports = { Quote, connectToDB }
-
-connectToDB()

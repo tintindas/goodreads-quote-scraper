@@ -1,10 +1,10 @@
 const puppeteer = require('puppeteer')
 const axios = require('axios')
-const $ = require('cheerio')
+const cheerio = require('cheerio')
 
 const getUrlByAuthorName = async (author) => {
   try {
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.goto('https://www.goodreads.com/quotes/')
 
@@ -34,5 +34,44 @@ const getUrlByAuthorName = async (author) => {
     console.error(err)
   }
 }
+// For testing
+// https://www.goodreads.com/quotes/search?commit=Search&page=2&q=neil+gaiman&utf8=%E2%9C%93
 
-module.exports = { getUrlByAuthorName }
+const getQuotes = async (url, numberOfPages) => {
+  const baseUrl = url.replace('page=2', 'page=<pageNumber>')
+
+  const quotes = []
+
+  for (let i = 1; i <= numberOfPages; i++) {
+    const url = baseUrl.replace('<pageNumber>', i.toString())
+
+    const res = await axios.get(url)
+    const $ = cheerio.load(res.data) // $ === res.body basically
+
+    const quotes = []
+
+    // cheerio does not seem to support arrow functions PLEASE DO NOT CHANGE FUNCTION SYNTAX
+    $('.quoteText').each(function () {
+      let quoteText = $(this).text() // get innerText
+      quoteText = quoteText.substr(0, quoteText.indexOf('―')).trim() // get only quoteText
+      quoteText = quoteText.substr(1, quoteText.length) // trim off inverted commas from start and end
+      const author = $(this).find('span[class=authorOrTitle]').text().trim() // get author name
+      let source = $(this).find('a[class=authorOrTitle]')
+      source = source ? source.text().trim() : null
+
+      quotes.push({ quoteText, author, source })
+    })
+  }
+}
+
+module.exports = { getUrlByAuthorName, getQuotes }
+
+// ;(async () => console.log(await getUrlByAuthorName('neil gaiman')))()
+// modifyURL(
+//   'https://www.goodreads.com/quotes/search?commit=Search&page=2&q=neil+gaiman&utf8=%E2%9C%93'
+// )
+
+// getQuotes(
+//   'https://www.goodreads.com/quotes/search?commit=Search&page=2&q=neil+gaiman&utf8=%E2%9C%93',
+//   5
+// )

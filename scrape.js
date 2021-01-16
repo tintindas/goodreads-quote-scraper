@@ -42,23 +42,27 @@ const getQuotes = async (url, numberOfPages = 5) => {
 
   const quotes = []
 
-  for (let i = 1; i <= numberOfPages; i++) {
-    const url = baseUrl.replace('<pageNumber>', i.toString())
+  try {
+    for (let i = 1; i <= numberOfPages; i++) {
+      const url = baseUrl.replace('<pageNumber>', i.toString())
 
-    const res = await axios.get(url)
-    const $ = cheerio.load(res.data) // $ === res.body basically
+      const res = await axios.get(url)
+      const $ = cheerio.load(res.data) // $ === res.body basically
 
-    // cheerio does not seem to support arrow functions PLEASE DO NOT CHANGE FUNCTION SYNTAX
-    $('.quoteText').each(function () {
-      let quoteText = $(this).text() // get innerText
-      quoteText = quoteText.substr(0, quoteText.indexOf('―')).trim() // get only quoteText
-      quoteText = quoteText.substr(1, quoteText.length) // trim off inverted commas from start and end
-      const author = $(this).find('span[class=authorOrTitle]').text().trim() // get author name
-      let source = $(this).find('a[class=authorOrTitle]')
-      source = source ? source.text().trim() : null // if source does not exist return null
+      // cheerio does not seem to support arrow functions PLEASE DO NOT CHANGE FUNCTION SYNTAX
+      $('.quoteText').each(function () {
+        let quoteText = $(this).text() // get innerText
+        quoteText = quoteText.substr(0, quoteText.indexOf('―')).trim() // get only quoteText
+        quoteText = quoteText.substr(1, quoteText.length) // trim off inverted commas from start and end
+        const author = $(this).find('span[class=authorOrTitle]').text().trim() // get author name
+        let source = $(this).find('a[class=authorOrTitle]')
+        source = source ? source.text().trim() : null // if source does not exist return null
 
-      quotes.push({ quoteText, author, source })
-    })
+        quotes.push({ quoteText, author, source })
+      })
+    }
+  } catch (err) {
+    console.error(err)
   }
 
   return quotes

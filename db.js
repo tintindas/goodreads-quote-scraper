@@ -3,8 +3,12 @@ const mongoose = require('mongoose')
 
 // Connect to Database
 const connectToDB = async () => {
+  const user = process.env.DB_USER
+  const password = process.env.DB_PASSWORD
+  const dbName = process.env.DB_NAME
+
   const db = await mongoose.connect(
-    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.yo7rn.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+    `mongodb+srv://${user}:${password}@cluster0.yo7rn.mongodb.net/${dbName}?retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true
@@ -25,4 +29,11 @@ const quoteSchema = new Schema({
 
 const Quote = new mongoose.model('Quote', quoteSchema)
 
-module.exports = { Quote, connectToDB }
+const saveToDB = async (quotes) => {
+  quotes.forEach((item) => {
+    const quote = new Quote(item)
+    await quote.save()
+  })
+}
+
+module.exports = {saveToDB, connectToDB, Quote}

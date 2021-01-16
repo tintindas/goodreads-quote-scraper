@@ -37,7 +37,7 @@ const getUrlByAuthorName = async (author) => {
 // For testing
 // https://www.goodreads.com/quotes/search?commit=Search&page=2&q=neil+gaiman&utf8=%E2%9C%93
 
-const getQuotes = async (url, numberOfPages) => {
+const getQuotes = async (url, numberOfPages = 5) => {
   const baseUrl = url.replace('page=2', 'page=<pageNumber>')
 
   const quotes = []
@@ -48,8 +48,6 @@ const getQuotes = async (url, numberOfPages) => {
     const res = await axios.get(url)
     const $ = cheerio.load(res.data) // $ === res.body basically
 
-    const quotes = []
-
     // cheerio does not seem to support arrow functions PLEASE DO NOT CHANGE FUNCTION SYNTAX
     $('.quoteText').each(function () {
       let quoteText = $(this).text() // get innerText
@@ -57,11 +55,13 @@ const getQuotes = async (url, numberOfPages) => {
       quoteText = quoteText.substr(1, quoteText.length) // trim off inverted commas from start and end
       const author = $(this).find('span[class=authorOrTitle]').text().trim() // get author name
       let source = $(this).find('a[class=authorOrTitle]')
-      source = source ? source.text().trim() : null
+      source = source ? source.text().trim() : null // if source does not exist return null
 
       quotes.push({ quoteText, author, source })
     })
   }
+
+  return quotes
 }
 
 module.exports = { getUrlByAuthorName, getQuotes }

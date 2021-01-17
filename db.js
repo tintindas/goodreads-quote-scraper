@@ -7,7 +7,8 @@ const Schema = mongoose.Schema
 const quoteSchema = new Schema({
 	quoteText: String,
 	author: String,
-	source: String
+	source: String,
+	tags: Array
 })
 
 const Quote = new mongoose.model('Quote', quoteSchema)

@@ -73,8 +73,6 @@ const getQuotes = async (url, numberOfPages = 5) => {
 
 				quotes.push({ quoteText, author, source, tags })
 			})
-
-			break
 		}
 	} catch (err) {
 		console.error(err)

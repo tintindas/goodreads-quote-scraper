@@ -3,7 +3,7 @@ const { getUrlByAuthorName, getQuotes } = require('./scrape')
 
 const scrape = async (author) => {
 	try {
-		const url = await getUrlByAuthorName('jeffrey archer')
+		const url = await getUrlByAuthorName(author)
 		const quotes = await getQuotes(url)
 		await saveToDB(quotes)
 		console.log('Done')
@@ -11,3 +11,5 @@ const scrape = async (author) => {
 		console.error(err)
 	}
 }
+
+scrape('neil gaiman')

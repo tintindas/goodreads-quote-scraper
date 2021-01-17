@@ -1,25 +1,26 @@
 {
-  "name": "goodreads-quote-scraper",
-  "version": "1.0.0",
-  "description": "Scrapes goodreads quotes from by author or book. ",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "goodreads",
-    "quotes",
-    "scraper"
-  ],
-  "author": "tintin_das",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.21.1",
-    "cheerio": "^1.0.0-rc.5",
-    "mongoose": "^5.11.10",
-    "puppeteer": "^5.5.0"
-  },
-  "devDependencies": {
-    "dotenv": "^8.2.0"
-  }
+	"name": "goodreads-quote-scraper",
+	"version": "1.0.0",
+	"description": "Scrapes quotes from goodreads by author.",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"goodreads",
+		"quotes",
+		"scraper"
+	],
+	"author": "tintin_das",
+	"license": "MIT",
+	"dependencies": {
+		"axios": "^0.21.1",
+		"cheerio": "^1.0.0-rc.5",
+		"mongoose": "^5.11.10",
+		"puppeteer": "^5.5.0"
+	},
+	"devDependencies": {
+		"dotenv": "^8.2.0"
+	}
 }

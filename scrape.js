@@ -4,6 +4,7 @@ const cheerio = require('cheerio')
 
 const getUrlByAuthorName = async (author) => {
 	try {
+		console.log('Getting author info')
 		const browser = await puppeteer.launch()
 		const page = await browser.newPage()
 		await page.goto('https://www.goodreads.com/quotes/')
@@ -34,8 +35,6 @@ const getUrlByAuthorName = async (author) => {
 		console.error(err)
 	}
 }
-// For testing
-// https://www.goodreads.com/quotes/search?commit=Search&page=2&q=neil+gaiman&utf8=%E2%9C%93
 
 const getQuotes = async (url, numberOfPages = 5) => {
 	const baseUrl = url.replace('page=2', 'page=<pageNumber>')
@@ -43,6 +42,7 @@ const getQuotes = async (url, numberOfPages = 5) => {
 	const quotes = []
 
 	try {
+		console.log('Scraping quotes')
 		for (let i = 1; i <= numberOfPages; i++) {
 			const url = baseUrl.replace('<pageNumber>', i.toString())
 
@@ -81,13 +81,3 @@ const getQuotes = async (url, numberOfPages = 5) => {
 }
 
 module.exports = { getUrlByAuthorName, getQuotes }
-
-// ;(async () => console.log(await getUrlByAuthorName('neil gaiman')))()
-// modifyURL(
-//   'https://www.goodreads.com/quotes/search?commit=Search&page=2&q=neil+gaiman&utf8=%E2%9C%93'
-// )
-
-getQuotes(
-	'https://www.goodreads.com/quotes/search?commit=Search&page=2&q=neil+gaiman&utf8=%E2%9C%93',
-	5
-)

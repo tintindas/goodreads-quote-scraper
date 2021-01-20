@@ -53,10 +53,13 @@ const getQuotes = async (url, numberOfPages = 5) => {
 			$('.quoteDetails').each(function () {
 				let quoteText = $(this).find('div[class=quoteText]').text() // get innerText
 				quoteText = quoteText.substr(0, quoteText.indexOf('―')).trim() // get only quoteText
-				quoteText = quoteText.substr(1, quoteText.length) // trim off inverted commas from start and end
-				const author = $(this).find('span[class=authorOrTitle]').text().trim() // get author name
+				quoteText = quoteText.substr(1, quoteText.length - 2) // trim off inverted commas from start and end
 				let source = $(this).find('a[class=authorOrTitle]')
 				source = source ? source.text().trim() : null // if source does not exist return null
+				let author = $(this).find('span[class=authorOrTitle]').text().trim() // get author name
+				if (author[author.length - 1] == ',') {
+					author = author.substr(0, author.length - 1) // take away trailing comma
+				}
 
 				//Get tags
 				let tags = $(this).find('.greyText.smallText.left').text().trim() // select concerned HTML Element

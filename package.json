@@ -15,7 +15,7 @@
 	"author": "tintin_das",
 	"license": "MIT",
 	"dependencies": {
-		"axios": "^0.21.1",
+		"axios": "^0.21.2",
 		"cheerio": "^1.0.0-rc.5",
 		"inquirer": "^7.3.3",
 		"mongoose": "^5.11.10",
